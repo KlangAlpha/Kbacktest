@@ -49,14 +49,6 @@ def PandasData(columns):
 
     return type('PandasDataFeed', (bt.feeds.PandasData, ), {'lines':lines, 'params':params} )
 
-class MA(bt.Indicator):
-    lines = ('ma',)
-    params = (('period_me1', 12), 
-              ('movav', bt.ind.MovAv.Exponential),)
-
-    def __init__(self):
-        super(MA, self).__init__()
-        me1 = self.p.movav(self.data, period=self.p.period_me1)
 
 # Create a Stratey
 class KStrategy(bt.Strategy):
@@ -70,7 +62,6 @@ class KStrategy(bt.Strategy):
         # Keep a reference to the "close" line in the data[0] dataseries
         self.dataclose = self.datas[0].close
         self.order = None
-        MA(self.data)
         
     def notify_order(self, order):
         if order.status == order.Completed:
@@ -113,8 +104,6 @@ class KStrategy(bt.Strategy):
  
         # d = eval("self.datas[0]."+"digit"+"[0]")
         dt = self.datas[0].datetime.date(0)
-
-    
 
         if not self.position:
             if buy_condition(dt):

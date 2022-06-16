@@ -52,6 +52,7 @@ def get_gn(gnname):
     codelist = df1['code'].to_list()
     return codelist 
 
+
 code =\
 """
 codelist = get_gn('光伏')
@@ -77,12 +78,18 @@ def strategy(code):
         pl.col("macd").apply(lambda data: parseValue(data,3)).alias('buy'),
         pl.col("macd").apply(lambda data: parseValue(data,4)).alias('sell')
     ])
-    
+   
 def buy_flag(dt):
-    return df_macd[df_macd['date'] == dt].buy[0] == 1
+    retdf = df_macd[df_macd['date'] == dt]
+    if len(retdf) < 1:
+        return 0
+    return retdf.buy[0] == 1
     
 def sell_flag(dt):
-    return df_macd[df_macd['date'] == dt].sell[0]  == 1
+    retdf = df_macd[df_macd['date'] == dt]
+    if len(retdf) < 1:
+        return 0
+    return retdf.sell[0] == 1
 """
 
 
@@ -91,10 +98,7 @@ def execute(code,msg):
     
     ecode = compile(code,"",'exec')
     exec(ecode,globals())
-   
     
-       
- 
     btr.set_buy_sell(buy_flag,sell_flag)
     btr.setmsg(msg)
 
@@ -110,5 +114,6 @@ def execute(code,msg):
     
         btr.init_btr(df)
     return 
+
 if __name__ == '__main__':
-    execute(code)
+    execute(code,lambda x:x)

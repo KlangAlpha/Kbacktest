@@ -109,7 +109,7 @@ async def conn_server():
 
     while True:
         try:
-            async with websockets.connect(server_host,ping_timeout=5000,ping_interval=5000) as websocket:
+            async with websockets.connect(server_host) as websocket:
                 print("connect success!",server_host)
                 websocket.handler = KlangMSG(websocket)
                 ws = websocket
