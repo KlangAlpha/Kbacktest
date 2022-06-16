@@ -102,6 +102,8 @@ def execute(code,msg):
     btr.set_buy_sell(buy_flag,sell_flag)
     btr.setmsg(msg)
 
+    msg({"flag":"stocklength","value":len(codelist)})
+
     for code in codelist:
 
         Kl.code(code)   
