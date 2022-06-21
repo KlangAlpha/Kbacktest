@@ -94,6 +94,7 @@ def sell_flag(dt):
 
 def execute(sourcecode,msg,Kl):
     if 'import' in sourcecode: #禁止用户导入模块
+        print('禁止使用import')
         return
 
     """
