@@ -3,11 +3,10 @@ from Kdata import get_date,API
 import requests
 import pandas as pd
 import polars as pl
+import os 
 
 #### backtest #####
 import btr
-from Klang import Kl,Klang
-Klang.Klang_init(); #加载所有股票列表
 ####
 
 
@@ -53,7 +52,7 @@ def get_gn(gnname):
     return codelist 
 
 
-code =\
+sourcecode =\
 """
 codelist = get_gn('光伏')
 #
@@ -93,10 +92,9 @@ def sell_flag(dt):
 """
 
 
-
-def execute(code,msg):
-    
-    ecode = compile(code,"",'exec')
+def execute(sourcecode,msg,Kl):
+   
+    ecode = compile(sourcecode,"",'exec')
     exec(ecode,globals())
     
     btr.set_buy_sell(buy_flag,sell_flag)
@@ -114,8 +112,14 @@ def execute(code,msg):
     
         strategy(code)
     
-        btr.init_btr(df)
-    return 
+        btr.init_btr(df) 
+    
 
 if __name__ == '__main__':
-    execute(code,lambda x:x)
+    #### Klang #####
+    # 
+    from Klang import Kl,Klang
+    Klang.Klang_init(); #加载所有股票列表
+    ####
+   
+    execute(sourcecode,lambda x:x,Kl)

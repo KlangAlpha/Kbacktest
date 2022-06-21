@@ -14,6 +14,11 @@ logging.basicConfig()
 import threading
 import sys,os 
 import backtest
+from multiprocessing import Process
+
+
+from Klang import Kl,Klang
+Klang.Klang_init(); #加载所有股票列表
 
 mutex = Lock ()
 
@@ -33,15 +38,21 @@ def resp_msg(message):
 
     await_run(ws.send(msg))
 
-async def execute(handler,data):
 
+async def execute(handler,data):
+    
     # 1.  获取内容
-    code = data['content']+"\n"
+    sourcecode = data['content']+"\n"
 
     # 2. 执行 busy lock 执行锁
     mutex.acquire()
+    if sys.platform == 'linux' or sys.platform =='linux2':
+        p = Process(target=backtest.execute,args=(sourcecode,resp_msg,Kl))
+    else: # windows ,macosx multiprocess 有bug
+        p = threading.Thread(target=backtest.execute,args=(sourcecode,resp_msg,Kl))
+    p.start()
+    p.join()
 
-    backtest.execute(code,resp_msg)
     # unlock
 
     mutex.release()   #之行完成，解锁，发通知给web用户
@@ -108,7 +119,7 @@ async def conn_server():
     global ws #for DISPALY
 
     while True:
-        try:
+        #try:
             async with websockets.connect(server_host) as websocket:
                 print("connect success!",server_host)
                 websocket.handler = KlangMSG(websocket)
@@ -119,13 +130,14 @@ async def conn_server():
                     msg = json.loads(data)
                     await websocket.handler.parse(msg)
 
-        except BaseException as e:
-            traceback.print_stack()
-            if isinstance(e, KeyboardInterrupt):
-                break
+        #except BaseException as e:
+        #    traceback.print_stack()
+        #    if isinstance(e, KeyboardInterrupt):
+        #        break
 
-        print("connect server error,try again ",server_host)
-        await asyncio.sleep(2)
-
-asyncio.get_event_loop().run_until_complete(conn_server())
+        #print("connect server error,try again ",server_host)
+        #await asyncio.sleep(2)
+if __name__ == '__main__':
+    
+    asyncio.get_event_loop().run_until_complete(conn_server())
 
