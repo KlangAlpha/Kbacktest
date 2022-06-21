@@ -119,7 +119,7 @@ async def conn_server():
     global ws #for DISPALY
 
     while True:
-        #try:
+        try:
             async with websockets.connect(server_host) as websocket:
                 print("connect success!",server_host)
                 websocket.handler = KlangMSG(websocket)
@@ -130,13 +130,13 @@ async def conn_server():
                     msg = json.loads(data)
                     await websocket.handler.parse(msg)
 
-        #except BaseException as e:
-        #    traceback.print_stack()
-        #    if isinstance(e, KeyboardInterrupt):
-        #        break
+        except BaseException as e:
+            traceback.print_stack()
+            if isinstance(e, KeyboardInterrupt):
+                break
 
-        #print("connect server error,try again ",server_host)
-        #await asyncio.sleep(2)
+        print("connect server error,try again ",server_host)
+        await asyncio.sleep(2)
 if __name__ == '__main__':
     
     asyncio.get_event_loop().run_until_complete(conn_server())
