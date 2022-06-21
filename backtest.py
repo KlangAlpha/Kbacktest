@@ -93,10 +93,18 @@ def sell_flag(dt):
 
 
 def execute(sourcecode,msg,Kl):
-   
+    if 'import' in sourcecode: #禁止用户导入模块
+        return
+
+    """
+    禁止使用系统函数
+    """
+    close = open = system = None;
+
     ecode = compile(sourcecode,"",'exec')
     exec(ecode,globals())
     
+
     btr.set_buy_sell(buy_flag,sell_flag)
     btr.setmsg(msg)
 
