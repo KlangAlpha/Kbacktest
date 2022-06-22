@@ -122,7 +122,7 @@ def execute(sourcecode,msg,Kl):
         strategy(code)
     
         btr.init_btr(df) 
-        time.sleep(5) #等待5秒发送完成
+    time.sleep(5) #等待5秒发送完成
     if sys.platform == 'linux' or sys.platform =='linux2':
         os._exit(0)
 
