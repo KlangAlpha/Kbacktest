@@ -110,9 +110,9 @@ class KlangMSG():
 
 
 #klang backtest server
-server_host = 'ws://localhost:9088/kbtserver'
+#server_host = 'ws://localhost:9088/kbtserver'
 #server_host = 'wss://klang.org.cn:8099/kbtserver'
-#server_host = 'ws://klang.org.cn:9099/kbtserver'
+server_host = 'ws://klang.org.cn:9099/kbtserver'
 
 async def conn_server():
 
@@ -129,6 +129,9 @@ async def conn_server():
                     data = await websocket.recv()
                     msg = json.loads(data)
                     await websocket.handler.parse(msg)
+                    if msg['type'] == K_EXE: # 每次测试需要创建新的进程，进程退出可能会让websocket连接失败
+                        websocket.close() #所以直接重新连接
+                        break
 
         except BaseException as e:
             traceback.print_stack()
