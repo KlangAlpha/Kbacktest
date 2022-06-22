@@ -3,7 +3,7 @@ from Kdata import get_date,API
 import requests
 import pandas as pd
 import polars as pl
-import os,sys 
+import os,sys,time
 
 #### backtest #####
 import btr
@@ -122,6 +122,7 @@ def execute(sourcecode,msg,Kl):
         strategy(code)
     
         btr.init_btr(df) 
+        time.sleep(5) #等待5秒发送完成
     if sys.platform == 'linux' or sys.platform =='linux2':
         os._exit(0)
 
