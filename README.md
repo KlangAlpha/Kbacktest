@@ -25,3 +25,15 @@ python3 setup.py install
 ### 更多的Klang使用文档
 
 https://klang.org.cn/docs
+
+### kbt_server.py
+Klang 在线回测 后台服务器进程，普通用户可以不使用
+
+### strategy 
+提供各种策略代码
+
+```
+python3 strategy/macd.py
+``` 
+
+运行一个 macd策略
