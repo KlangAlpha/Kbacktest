@@ -77,24 +77,26 @@ class KStrategy(bt.Strategy):
         if order.status in [order.Completed, order.Canceled, order.Margin]:
             if order.isbuy():
                 self.log(
-                    'BUY EXECUTED, Price: %.2f, Cost: %.2f, Comm %.2f,value %.2f' %
+                    'BUY EXECUTED, Price: %.2f, Cost: %.2f,Size: %.2f, Comm %.2f,value %.2f' %
                     (order.executed.price,
                      order.executed.value,
+                     order.executed.size,
                      order.executed.comm,self.broker.getvalue()))
 
                 self.buyprice = order.executed.price
                 self.buycomm = order.executed.comm
                 dt = self.datas[0].datetime.date(0)
-                msg({"flag":"buy","price":order.executed.price,
+                msg({"flag":"buy","price":order.executed.price,'size':order.executed.size,
                 "value":self.broker.getvalue(),
                 "date":dt.isoformat()})
             else:  # Sell
-                self.log('SELL EXECUTED, Price: %.2f, Cost: %.2f, Comm %.2f,value %.2f' %
+                self.log('SELL EXECUTED, Price: %.2f, Cost: %.2f, Size:%.2f,Comm %.2f,value %.2f' %
                          (order.executed.price,
                           order.executed.value,
+                          order.executed.size,
                           order.executed.comm,self.broker.getvalue()))
                 dt = self.datas[0].datetime.date(0)
-                msg({"flag":"sell","price":order.executed.price,
+                msg({"flag":"sell","price":order.executed.price,'size':order.executed.size,
                 "value":self.broker.getvalue(),
                 "date":dt.isoformat() })
         self.order = None
