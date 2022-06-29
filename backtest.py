@@ -5,7 +5,28 @@ import pandas as pd
 import polars as pl
 import os,sys,time
 
-from Klang import C,O,D,V,H,L
+from Klang import (
+    OPEN, O,
+    HIGH, H,
+    LOW, L,
+    CLOSE, C,
+    VOLUME, V, VOL,
+    DATETIME,
+
+    SMA,MA,EMA,WMA,
+
+    SUM,ABS,STD,
+
+    CROSS,
+    REF,BARSLAST,BARSCOUNT,BARSLASTFIND,
+    MAX,
+    MIN,
+    EVERY,
+    COUNT,
+    HHV,
+    LLV,
+    IF, IIF,
+    MACD,APPROX)
 
 #### backtest #####
 import btr

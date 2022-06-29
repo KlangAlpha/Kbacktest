@@ -110,9 +110,9 @@ class KlangMSG():
 
 
 #klang backtest server
-#server_host = 'ws://localhost:9088/kbtserver'
+server_host = 'ws://localhost:9088/kbtserver'
 #server_host = 'wss://klang.org.cn:8099/kbtserver'
-server_host = 'ws://klang.org.cn:9099/kbtserver'
+#server_host = 'ws://klang.org.cn:9099/kbtserver'
 
 async def conn_server():
 
